@@ -3,22 +3,18 @@ from flask import Flask
 from flask_ask import Ask, statement, question, session
 from flask import Flask
 import requests
-import urllib.request  as urllib2 
 from bs4 import BeautifulSoup
 
 
 
 
 app = Flask(__name__)
-ask = Ask(app, '/plstandings')
+ask = Ask(app, '/')
 
 def getTable():
     url = "http://www.espn.in/football/table/_/league/eng.1"
-    contest_file = urllib2.urlopen(url)
-    contest_html = contest_file.read()
-    contest_file.close()
-
-    soup = BeautifulSoup(contest_html, 'html.parser')
+    contest_file = requests.get(url)
+    soup = BeautifulSoup(contest_file.text, 'html.parser')
 
     row = soup.find_all("tr", attrs={'class': 'standings-row'})
 
@@ -69,8 +65,6 @@ def getTable():
     df["Against"] = goals_against
     df["Goals Difference"] = goals_difference
     df["Points"] = points
-
-    print df
     return df
 
 @app.route('/')
@@ -92,7 +86,7 @@ def team_intent(number):
     message = "Here are the current top " + str(min(number,20)) + "teams in Premier League....." #adasd
     for i in range(len(df.index)):
         count = count + 1
-        print "Team " + str(i + 1) + ".. " + str(df['Team'][i]) + " with " + str(df['Wins'][i]) + " wins, " + str(df['Losses'][i]) + " losses and " + str(df['Points'][i]) + " points....."
+        message = message + "Team " + str(i + 1) + ".. " + str(df['Team'][i]) + " with " + str(df['Wins'][i]) + " wins, " + str(df['Losses'][i]) + " losses and " + str(df['Points'][i]) + " points....."
         if count == number:
             break
     return statement(message)
@@ -126,4 +120,4 @@ def help_Intent():
 
 
 if __name__ == '__main__':
-    app.run(debug = True,threaded = True)
+    app.run(debug = True)
