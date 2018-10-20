@@ -94,7 +94,7 @@ def team_intent(number):
 
 @ask.intent("YesIntent")
 def yes_Intent():
-    message = 'Say the number of top teams would you like to know about?'
+    message = 'Say the number of top teams would you like to know about'
     return question(message)
 
 @ask.intent("NoIntent")
@@ -114,7 +114,7 @@ def stop_Intent():
 
 @ask.intent("AMAZON.HelpIntent")
 def help_Intent():
-    message = 'Say the number of top teams would you like to know about?'
+    message = 'Say the number of top teams would you like to know about'
     return question(message)
 
 
