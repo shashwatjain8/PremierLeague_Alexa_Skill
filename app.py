@@ -3,7 +3,7 @@ from flask import Flask
 from flask_ask import Ask, statement, question, session
 from flask import Flask
 import requests
-import urllib2
+import urllib.request  as urllib2 
 from bs4 import BeautifulSoup
 
 
